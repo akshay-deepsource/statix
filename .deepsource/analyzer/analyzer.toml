@@ -7,7 +7,7 @@ visibility = "public"
 analysis_command = "/app/statix -o marvin > /toolbox/analysis_results.json"
 
 [analyzer]
-  command = "/app/statix"
+  command = "/app/statix -o marvin > /toolbox/analysis_results.json"
 
 [build]
   image = "nixos/nix"
