@@ -72,6 +72,11 @@ impl Check {
                 .collect::<Vec<String>>()
                 .join("\n");
             Ok(ReadOnlyVfs::singleton("<stdin>", src.as_bytes()))
+        } else if self.format == OutFormat::Marvin {
+            let target = PathBuf::from(std::env::var("CODE_PATH").unwrap());
+            let ignore = dirs::build_ignore_set(&self.ignore, &target, self.unrestricted)?;
+            let files = dirs::walk_nix_files(ignore, &target)?;
+            vfs(files.collect::<Vec<_>>())
         } else {
             let ignore = dirs::build_ignore_set(&self.ignore, &self.target, self.unrestricted)?;
             let files = dirs::walk_nix_files(ignore, &self.target)?;
@@ -205,10 +210,12 @@ pub struct Explain {
 #[derive(Parser, Debug)]
 pub struct Dump {}
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum OutFormat {
     #[cfg(feature = "json")]
     Json,
+    #[cfg(feature = "json")]
+    Marvin,
     Errfmt,
     StdErr,
 }
@@ -227,6 +234,8 @@ impl fmt::Display for OutFormat {
             match self {
                 #[cfg(feature = "json")]
                 Self::Json => "json",
+                #[cfg(feature = "json")]
+                Self::Marvin => "marvin",
                 Self::Errfmt => "errfmt",
                 Self::StdErr => "stderr",
             }
@@ -241,8 +250,10 @@ impl FromStr for OutFormat {
         match value.to_ascii_lowercase().as_str() {
             #[cfg(feature = "json")]
             "json" => Ok(Self::Json),
+            #[cfg(feature = "json")]
+            "marvin" => Ok(Self::Marvin),
             #[cfg(not(feature = "json"))]
-            "json" => Err("statix was not compiled with the `json` feature flag"),
+            "json" | "marvin" => Err("statix was not compiled with the `json` feature flag"),
             "errfmt" => Ok(Self::Errfmt),
             "stderr" => Ok(Self::StdErr),
             _ => Err("unknown output format, try: json, errfmt"),

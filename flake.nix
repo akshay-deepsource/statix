@@ -96,6 +96,7 @@
             "rust-src"
           ];
           inherit (fenix.packages."${system}") rust-analyzer;
+          inherit (pkgs) stdenv darwin lib;
         in
         pkgs.mkShell {
           nativeBuildInputs = [
@@ -104,6 +105,11 @@
             rust-analyzer
             toolchain
           ];
+          buildInputs = lib.optionals stdenv.isDarwin [
+            darwin.apple_sdk.frameworks.Security
+            darwin.libiconv
+          ];
+
           RUST_LOG = "info";
           RUST_BACKTRACE = 1;
         });

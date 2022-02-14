@@ -1,0 +1,17 @@
+version = "1"
+
+name = "Nix"
+description = "Lints and suggestions for the Nix programming language"
+category = "language"
+visibility = "public"
+analysis_command = "/app/statix -o marvin > /toolbox/analysis_results.json"
+
+[analyzer]
+  command = "/app/statix"
+
+[build]
+  image = "nixos/nix"
+  steps = """
+  nix build -L .
+  cp ./result/bin/statix /app/statix
+  """

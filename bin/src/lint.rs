@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use crate::{utils, LintMap};
 
 use lib::{session::SessionInfo, Report};
@@ -9,6 +11,8 @@ pub struct LintResult {
     pub file_id: FileId,
     pub reports: Vec<Report>,
 }
+
+pub type ProjectResults = HashMap<FileId, Vec<Report>>;
 
 pub fn lint_with(vfs_entry: VfsEntry, lints: &LintMap, sess: &SessionInfo) -> LintResult {
     let file_id = vfs_entry.file_id;
@@ -40,9 +44,9 @@ pub fn lint(vfs_entry: VfsEntry, sess: &SessionInfo) -> LintResult {
 }
 
 pub mod main {
-    use std::io;
+    use std::{collections::HashMap, io};
 
-    use super::lint_with;
+    use super::{lint_with, LintResult, ProjectResults};
     use crate::{
         config::{Check as CheckConfig, ConfFile},
         err::StatixErr,
@@ -59,12 +63,21 @@ pub mod main {
         let version = conf_file.version()?;
         let session = SessionInfo::from_version(version);
         let lint = |vfs_entry| lint_with(vfs_entry, &lints, &session);
-        let results = vfs.iter().map(lint).collect::<Vec<_>>();
+        let results = vfs.iter().map(lint);
+        let project_results = results.fold(
+            HashMap::new(),
+            |mut map: ProjectResults, mut item: LintResult| {
+                map.entry(item.file_id)
+                    .and_modify(|reports| reports.append(&mut item.reports))
+                    .or_insert(item.reports);
+                map
+            },
+        );
 
-        if results.iter().map(|r| r.reports.len()).sum::<usize>() != 0 {
-            for r in &results {
-                stdout.write(&r, &vfs, check_config.format).unwrap();
-            }
+        if !project_results.is_empty() {
+            stdout
+                .write(&project_results, &vfs, check_config.format)
+                .unwrap();
             std::process::exit(1);
         }
 

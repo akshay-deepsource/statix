@@ -1,0 +1,5 @@
+version = 1
+
+[[analyzers]]
+name = "github.com/akshay-deepsource/statix"
+enabled = true
