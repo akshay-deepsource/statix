@@ -24,7 +24,7 @@ mod util {
         ($tname:ident => $sess:expr) => {
             #[test]
             fn $tname() {
-                use statix::{config::OutFormat, traits::WriteDiagnostic, lint};
+                use statix::{config::OutFormat, traits::WriteDiagnostic, lint::{self, ProjectResults, LintResult}};
                 use vfs::ReadOnlyVfs;
 
                 let file_path = concat!("data/", stringify!($tname), ".nix");
@@ -35,9 +35,18 @@ mod util {
                 let session = $sess;
 
                 let mut buffer = Vec::new();
-                vfs.iter().map(|entry| lint::lint(entry, &session)).for_each(|r| {
-                    buffer.write(&r, &vfs, OutFormat::StdErr).unwrap();
-                });
+                let results = vfs.iter().map(|entry| lint::lint(entry, &session));
+                let project_results = results.fold(
+                    std::collections::HashMap::new(),
+                    |mut map: ProjectResults, mut item: LintResult| {
+                        map.entry(item.file_id)
+                            .and_modify(|reports| reports.append(&mut item.reports))
+                            .or_insert(item.reports);
+                        map
+                    },
+                );
+                buffer.write(&project_results, &vfs, OutFormat::StdErr).unwrap();
+
 
                 let stripped = strip_ansi_escapes::strip(&buffer).unwrap();
                 let out =  std::str::from_utf8(&stripped).unwrap();

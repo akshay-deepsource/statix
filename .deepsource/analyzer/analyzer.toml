@@ -4,10 +4,10 @@ name = "Nix"
 description = "Lints and suggestions for the Nix programming language"
 category = "language"
 visibility = "public"
-analysis_command = "/app/statix -o marvin > /toolbox/analysis_results.json"
+analysis_command = "/app/statix check -o marvin > /toolbox/analysis_results.json"
 
 [analyzer]
-  command = "/app/statix -o marvin > /toolbox/analysis_results.json"
+  command = "/app/statix check -o marvin > /toolbox/analysis_results.json"
 
 [build]
   image = "nixos/nix"
