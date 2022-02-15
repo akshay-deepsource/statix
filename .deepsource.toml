@@ -4,7 +4,3 @@ version = 1
 name = "github.com/akshay-deepsource/statix"
 enabled = true
 
-[[analyzers]]
-name = "secrets"
-enabled = true
-
