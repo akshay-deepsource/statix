@@ -10,11 +10,10 @@ analysis_command = "/app/statix check -o marvin $CODE_PATH > /toolbox/analysis_r
 command = "/app/statix check -o marvin $CODE_PATH > /toolbox/analysis_results.json"
 
 [build]
-image = "ubuntu:18.04"
+image = "rust:1.58.1-buster"
 steps = """
 apt-get update
-apt-get install -y build-essential curl openssl
-curl https://sh.rustup.rs -sSf | bash -s -- -y
-.cargo/bin/cargo build --release
+apt-get install -y openssl openssl-dev
+cargo build --release --all-features
 cp ./target/release/statix /app/statix
 """
