@@ -7,10 +7,15 @@ visibility = "public"
 analysis_command = "/app/statix check -o marvin $CODE_PATH > /toolbox/analysis_results.json"
 
 [analyzer]
-  command = "/app/statix check -o marvin $CODE_PATH > /toolbox/analysis_results.json"
+command = "/app/statix check -o marvin $CODE_PATH > /toolbox/analysis_results.json"
 
 [build]
-  image = "ubuntu:18.04"
-  steps = """
-  cp ./result/bin/statix /app/statix
-  """
+image = "ubuntu:18.04"
+steps = """
+apt-get update
+apt-get install -y build-essential curl
+curl https://sh.rustup.rs -sSf | bash -s -- -y
+PATH="$HOME/.cargo/bin:${PATH}"
+cargo build --release
+cp ./target/release/statix /app/statix
+"""
