@@ -15,7 +15,6 @@ steps = """
 apt-get update
 apt-get install -y build-essential curl openssl
 curl https://sh.rustup.rs -sSf | bash -s -- -y
-PATH="$HOME/.cargo/bin:${PATH}"
-cargo build --release
+.cargo/bin/cargo build --release
 cp ./target/release/statix /app/statix
 """
