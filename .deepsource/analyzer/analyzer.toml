@@ -12,6 +12,8 @@ command = "/app/statix check -o marvin $CODE_PATH > /toolbox/analysis_results.js
 [build]
 image = "nixos/nix"
 steps = """
-nix build -L .
+nix-env -iA cachix -f https://cachix.org/api/v1/install
+cachix use statix
+nix-build
 cp ./result/bin/statix /app/statix
 """
