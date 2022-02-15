@@ -72,11 +72,6 @@ impl Check {
                 .collect::<Vec<String>>()
                 .join("\n");
             Ok(ReadOnlyVfs::singleton("<stdin>", src.as_bytes()))
-        } else if self.format == OutFormat::Marvin {
-            let target = PathBuf::from(std::env::var("CODE_PATH").unwrap());
-            let ignore = dirs::build_ignore_set(&self.ignore, &target, self.unrestricted)?;
-            let files = dirs::walk_nix_files(ignore, &target)?;
-            vfs(files.collect::<Vec<_>>())
         } else {
             let ignore = dirs::build_ignore_set(&self.ignore, &self.target, self.unrestricted)?;
             let files = dirs::walk_nix_files(ignore, &self.target)?;

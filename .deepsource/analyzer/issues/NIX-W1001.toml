@@ -1,0 +1,26 @@
+title = "Unnecessary comparison with boolean"
+severity = "minor"
+cateogry = "antipattern"
+description = """
+Checks for expressions of the form `x == true`, `x != true` and
+suggests using the variable directly.
+
+<!--more-->
+
+## Why is this bad?
+Unnecessary code.
+
+## Example
+Instead of checking the value of `x`:
+
+```nix
+if x == true then 0 else 1
+```
+
+Use `x` directly:
+
+```nix
+if x then 0 else 1
+```
+"""
+weight=40

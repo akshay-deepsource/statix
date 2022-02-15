@@ -77,7 +77,7 @@ pub mod main {
         if !project_results.is_empty() {
             stdout
                 .write(&project_results, &vfs, check_config.format)
-                .unwrap();
+                .expect("shit hit the fan");
             std::process::exit(1);
         }
 
