@@ -194,7 +194,7 @@ mod json {
         let report = project_results
             .into_iter()
             .map(|(file_id, reports)| {
-                let path = vfs.file_path(*file_id);
+                // let path = vfs.file_path(*file_id);
                 let src = vfs.get_str(*file_id);
                 reports.iter().map(move |r| {
                     let note = r.note;
@@ -320,7 +320,10 @@ mod marvin {
         let issues = project_results
             .into_iter()
             .map(|(file_id, reports)| {
-                let path = vfs.file_path(*file_id);
+                let code_env = std::env::var("CODE_PATH").unwrap();
+                let fq_path = vfs.file_path(*file_id);
+                let path = fq_path.strip_prefix(code_env).unwrap_or(fq_path);
+                // let path = vfs.file_path(*file_id);
                 let src = vfs.get_str(*file_id);
                 reports
                     .into_iter()
