@@ -5,6 +5,10 @@ name = "secrets"
 enabled = true
 
 [[analyzers]]
+name = "rust"
+enabled = true
+
+[[analyzers]]
 name = "github.com/akshay-deepsource/statix"
 enabled = true
 
