@@ -1,0 +1,29 @@
+title = "Found usage of deprecated builtin toPath"
+severity = "minor"
+category = "antipattern"
+description = """
+## What it does
+Checks for usage of the `toPath` function.
+
+## Why is this bad?
+`toPath` is deprecated.
+
+## Example
+
+```nix
+builtins.toPath "/path"
+```
+
+Try these instead:
+
+```nix
+# to convert the string to an absolute path:
+/. + "/path"
+# => /abc
+
+# to convert the string to a path relative to the current directory:
+./. + "/bin"
+# => /home/np/statix/bin
+```
+"""
+weight=40

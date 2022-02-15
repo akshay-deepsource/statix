@@ -1,0 +1,31 @@
+title = "Found empty pattern in function argument"
+severity = "minor"
+category = "antipattern"
+description = """
+Checks for an empty variadic pattern: `{...}`, in a function
+argument.
+
+## Why is this bad?
+The intention with empty patterns is not instantly obvious. Prefer
+an underscore identifier instead, to indicate that the argument
+is being ignored.
+
+## Example
+
+```nix
+client = { ... }: {
+  services.irmaseal-pkg.enable = true;
+};
+```
+
+Replace the empty variadic pattern with `_` to indicate that you
+intend to ignore the argument:
+
+```nix
+client = _: {
+  services.irmaseal-pkg.enable = true;
+};
+```
+"""
+weight=40
+

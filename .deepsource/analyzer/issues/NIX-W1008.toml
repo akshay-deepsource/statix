@@ -1,0 +1,30 @@
+title = "These parentheses can be omitted"
+severity = "minor"
+category = "antipattern"
+description = """
+Checks for unnecessary parentheses.
+
+## Why is this bad?
+Unnecessarily parenthesized code is hard to read.
+
+## Example
+
+```nix
+let
+  double = (x: 2 * x);
+  ls = map (double) [ 1 2 3 ];
+in
+  (2 + 3)
+```
+
+Remove unnecessary parentheses:
+
+```nix
+let
+  double = x: 2 * x;
+  ls = map double [ 1 2 3 ];
+in
+  2 + 3
+```
+"""
+weight=40

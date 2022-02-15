@@ -1,0 +1,33 @@
+title = "These let-in expressions are collapsible"
+severity = "minor"
+category = "antipattern"
+description = """
+Checks for `let-in` expressions whose body is another `let-in`
+expression.
+
+## Why is this bad?
+Unnecessary code, the `let-in` expressions can be merged.
+
+## Example
+
+```nix
+let
+  a = 2;
+in
+let
+  b = 3;
+in
+  a + b
+```
+
+Merge both `let-in` expressions:
+
+```nix
+let
+  a = 2;
+  b = 3;
+in
+  a + b
+```
+"""
+weight=40

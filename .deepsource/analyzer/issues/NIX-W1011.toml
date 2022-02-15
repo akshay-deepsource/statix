@@ -1,0 +1,24 @@
+title = "Found redundant pattern bind in function argument"
+severity = "minor"
+category = "antipattern"
+description = """
+Checks for binds of the form `inputs @ { ... }` in function
+arguments.
+
+## Why is this bad?
+The variadic pattern here is redundant, as it does not capture
+anything.
+
+## Example
+
+```nix
+inputs @ { ... }: inputs.nixpkgs
+```
+
+Remove the pattern altogether:
+
+```nix
+inputs: inputs.nixpkgs
+```
+"""
+weight=40

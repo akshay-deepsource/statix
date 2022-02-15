@@ -1,0 +1,18 @@
+title = "Found empty inherit statement"
+severity = "minor"
+category = "antipattern"
+description = """
+Checks for empty inherit statements.
+
+## Why is this bad?
+Useless code, probably the result of a refactor.
+
+## Example
+
+```nix
+inherit;
+```
+
+Remove it altogether.
+"""
+weight=40

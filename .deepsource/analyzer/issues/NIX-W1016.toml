@@ -1,0 +1,24 @@
+title = "Found lib.zipAttrsWith"
+severity = "minor"
+category = "antipattern"
+description = """
+Checks for `lib.zipAttrsWith`.
+
+## Why is this bad?
+Nix 2.6 introduces `builtins.zipAttrsWith` which is faster and does
+not require a lib import.
+
+## Example
+
+```nix
+lib.zipAttrsWith (name: values: values) [ {a = "x";} {a = "y"; b = "z";} ]
+# { a = ["x" "y"]; b = ["z"] }
+```
+
+Replace `lib.zipAttrsWith` with `builtins.zipAttrsWith`:
+
+```nix
+builtins.zipAttrsWith (name: values: values) [ {a = "x";} {a = "y"; b = "z";} ]
+```
+"""
+weight=40
