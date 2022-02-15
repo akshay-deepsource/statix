@@ -1,6 +1,6 @@
 title = "Unnecessary comparison with boolean"
 severity = "minor"
-cateogry = "antipattern"
+category = "antipattern"
 description = """
 Checks for expressions of the form `x == true`, `x != true` and
 suggests using the variable directly.
@@ -23,5 +23,4 @@ Use `x` directly:
 if x then 0 else 1
 ```
 """
-
 weight=40

@@ -1,0 +1,29 @@
+title = "Assignment instead of inherit"
+severity = "minor"
+category = "antipattern"
+description = """
+Checks for bindings of the form `a = a`.
+
+## Why is this bad?
+If the aim is to bring attributes from a larger scope into
+the current scope, prefer an inherit statement.
+
+## Example
+
+```nix
+let
+  a = 2;
+in
+  { a = a; b = 3; }
+```
+
+Try `inherit` instead:
+
+```nix
+let
+  a = 2;
+in
+  { inherit a; b = 3; }
+```
+"""
+weight=40
