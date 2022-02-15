@@ -13,7 +13,7 @@ command = "/app/statix check -o marvin $CODE_PATH > /toolbox/analysis_results.js
 image = "rust:1.58.1-buster"
 steps = """
 apt-get update
-apt-get install -y openssl openssl-dev
+apt-get install -y openssl
 cargo build --release --all-features
 cp ./target/release/statix /app/statix
 """
