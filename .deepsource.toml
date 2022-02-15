@@ -1,9 +1,10 @@
 version = 1
 
 [[analyzers]]
-name = "secrets"
+name = "github.com/akshay-deepsource/statix"
 enabled = true
 
 [[analyzers]]
-name = "github.com/akshay-deepsource/statix"
+name = "secrets"
 enabled = true
+
