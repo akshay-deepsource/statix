@@ -10,8 +10,7 @@ analysis_command = "/app/statix check -o marvin $CODE_PATH > /toolbox/analysis_r
   command = "/app/statix check -o marvin $CODE_PATH > /toolbox/analysis_results.json"
 
 [build]
-  image = "nixos/nix:2.7.0pre20220214_94992a9"
+  image = "ubuntu:18.04"
   steps = """
-  nix build -L .
   cp ./result/bin/statix /app/statix
   """
