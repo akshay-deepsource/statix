@@ -12,7 +12,7 @@ command = "/app/statix check -o marvin $CODE_PATH > /toolbox/analysis_results.js
 [build]
 image = "nixos/nix"
 steps = """
-nix-env -iA git coreutils openssh shadow getent
+nix-env -iA nixpkgs.git nixpkgs.coreutils nixpkgs.openssh nixpkgs.shadow nixpkgs.getent
 nix-env -iA cachix -f https://cachix.org/api/v1/install
 cachix use statix
 nix-build
